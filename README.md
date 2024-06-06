@@ -2,6 +2,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+import openpyxl
 # import data
 U1401xls = pd.ExcelFile('U1401.xlsx')
 R1401xls = pd.ExcelFile('R1401.xlsx')
