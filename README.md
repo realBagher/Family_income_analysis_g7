@@ -122,5 +122,16 @@ cost3 = pd.concat((M98_1401[5],M98_1401[7],M98_1401[8],M98_1401[9],M98_1401[10],
 cost = pd.concat((cost1,cost2,cost3),axis = 0)
 cost[['Address','code','value','dataYear','R/U']].merge(info.iloc[:,0:3],on='Address',how='outer')
 cost = cost.fillna(0)
+## Statistic
+plt.hist(M98_1401[1]['age'],bins=100)
+plt.show()
+plt.bar(M98_1401[1]['degree'].value_counts().index,M98_1401[1]['degree'].value_counts().to_list())
+plt.show()
+plt.bar(M98_1401[1]['relation'].value_counts().index,M98_1401[1]['relation'].value_counts().to_list())
+plt.show()
+plt.bar(M98_1401[1]['literacy'].value_counts().index,M98_1401[1]['literacy'].value_counts().to_list())
+plt.show()
+plt.bar(M98_1401[1]['occupationalst'].value_counts().index,M98_1401[1]['occupationalst'].value_counts().to_list())
+plt.show()
 cost['kilogram'] = cost['gram'].astype('float64')/1000 + cost['kilogram'].astype('float64')
 final_cost = cost[['Address','purchased','kilogram','value','mortgage','dataYear','R/U']]
