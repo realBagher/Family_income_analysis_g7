@@ -101,3 +101,13 @@ final_income = cleaned_income[[
 'dataYear',
 'R/U']]
 final_income = final_income.fillna(0)
+def Iqr_F(T):
+    d1 = T.quantile(0.25)
+    d3 = T.quantile(0.75)
+    iqr = d3 - d1
+    low_bound = d1 - 1.5 * iqr
+    up_bound = d3 + 1.5 * iqr
+    outliers = T[(T < low_bound) | (T > up_bound)].index
+    T_copy = T.copy()
+    T_copy[outliers] = np.nan
+    return pd.DataFrame(T_copy)
