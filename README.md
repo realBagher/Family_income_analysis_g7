@@ -55,6 +55,7 @@ for sheet_name in R98xls.sheet_names:
 for x in M98_1401:
     x.reset_index(drop=True)
 # perproccessing
+## P4
 income = M98_1401[17].merge(M98_1401[18].iloc[:,0:16],on=['Address','member'],how='outer') \
 .merge(M98_1401[19].iloc[:,0:8].merge(M98_1401[20].iloc[:,0:5],on=['Address','member'],how='outer'),on=['Address','member'],how='outer').drop('DYCOL00',axis=1)# \
 cleaned_income =income.copy()
@@ -101,6 +102,7 @@ final_income = cleaned_income[[
 'dataYear',
 'R/U']]
 final_income = final_income.fillna(0)
+## IQR
 def Iqr_F(T):
     d1 = T.quantile(0.25)
     d3 = T.quantile(0.75)
@@ -111,3 +113,14 @@ def Iqr_F(T):
     T_copy = T.copy()
     T_copy[outliers] = np.nan
     return pd.DataFrame(T_copy)
+## P3
+cost1 = pd.concat((M98_1401[3],M98_1401[4]),axis=0)# food & drink
+cost2 = M98_1401[6]# renting
+M1401[15]['value'] = pd.to_numeric(M1401[15]['value'], errors='coerce')
+M1401[16]['value'] = pd.to_numeric(M1401[16]['value'], errors='coerce')
+cost3 = pd.concat((M98_1401[5],M98_1401[7],M98_1401[8],M98_1401[9],M98_1401[10],M98_1401[11],M98_1401[12],M98_1401[13],M98_1401[14],M98_1401[15],M98_1401[16]),axis=0).reset_index(drop=True) #other expence
+cost = pd.concat((cost1,cost2,cost3),axis = 0)
+cost[['Address','code','value','dataYear','R/U']].merge(info.iloc[:,0:3],on='Address',how='outer')
+cost = cost.fillna(0)
+cost['kilogram'] = cost['gram'].astype('float64')/1000 + cost['kilogram'].astype('float64')
+final_cost = cost[['Address','purchased','kilogram','value','mortgage','dataYear','R/U']]
