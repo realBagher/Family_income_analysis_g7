@@ -146,6 +146,7 @@ for file_name in file_names:
         grouped = df.groupby('code')
         mortgage= grouped.get_group(42212)['mortgage']
         mortgage= mortgage.dropna()
+        df.drop("mortgage",axis=1,inplace=True)
         mortgages.append(mortgage)
 print(mortgages)
 
