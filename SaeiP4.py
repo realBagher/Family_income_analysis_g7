@@ -39,9 +39,23 @@ cost = pd.concat((cost1,cost2,cost3),axis = 0)
 # final_cost=cost[['Address','code','value','dataYear','R/U']]
 #.merge(info_Family.iloc[:,0:3],on='Address',how='outer')
 cost = cost.fillna(0)
+cost['catagory']=cost.code.astype(str).str[:1]
+# پاک‌سازی ستون 'gram'
+cost['gram'] = pd.to_numeric(cost['gram'], errors='coerce')
 
+# پاک‌سازی ستون 'kilogram'
+cost['kilogram'] = pd.to_numeric(cost['kilogram'], errors='coerce')
 cost['Kilogram'] = cost['gram'].astype('float64')/1000 + cost['kilogram'].astype('float64')
-final_cost = cost[['Address','purchased','Kilogram','value','mortgage','dataYear','R/U']]
+
+grouped_cost = cost.groupby(['Address','dataYear','catagory','R/U'])[['value','Kilogram']].sum()
+grouped_cost = grouped_cost.reset_index()
+
+# استفاده از np.isin برای ایجاد ماسک بولی 
+# [خوراک,پوشاک,مسکن,بهداشت, حمل و نقل,هتل]
+mask = np.isin(grouped_cost['catagory'], ['1','3','4','6','7','11'])
+
+# استفاده از np.where برای فیلتر کردن آرایه
+filtered_cost = grouped_cost[mask]
 ## P4
 income = M98_1401[17].merge(M98_1401[18].iloc[:,0:16],on=['Address','member'],how='outer') \
 .merge(M98_1401[19].iloc[:,0:8].merge(M98_1401[20].iloc[:,0:5],on=['Address','member'],how='outer'),on=['Address','member'],how='outer').drop('DYCOL00',axis=1)# \
