@@ -101,7 +101,7 @@ cleaned_income['Days'] = cleaned_income['days_w'] + cleaned_income['days_s']
 
 # انتخاب ستون‌های نهایی برای تحلیل درآمد
 final_income = cleaned_income[[
-    'Employed', 'ISCO_w', 'ISIC_w', 'Status', 'Hours', 'Days', 'ISCO_s', 'ISIC_s', 'netincome_w_m', 'netincome_w_y', 'agriculture', 'sale', 'income_s_y',
+    'Address','Employed', 'ISCO_w', 'ISIC_w', 'Status', 'Hours', 'Days', 'ISCO_s', 'ISIC_s', 'netincome_w_m', 'netincome_w_y', 'agriculture', 'sale', 'income_s_y',
     'income_pension', 'income_rent', 'income_interest', 'income_aid', 'income_resale', 'income_transfer', 'subsidy_month', 'subsidy', 'Fasl', 'dataYear', 'R/U'
 ]].fillna(0)
 
