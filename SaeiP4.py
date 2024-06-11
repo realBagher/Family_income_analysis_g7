@@ -76,8 +76,8 @@ mask = np.isin(grouped_cost['catagory'], ['1', '3', '4', '6', '7', '11'])
 filtered_cost = grouped_cost[mask]
 
 # ادغام داده‌های درآمد
-income = M98_1401[17].merge(M98_1401[18].iloc[:, 0:16], on=['Address', 'member'], how='outer') \
-    .merge(M98_1401[19].iloc[:, 0:8].merge(M98_1401[20].iloc[:, 0:5], on=['Address', 'member'], how='outer'), on=['Address', 'member'], how='outer').drop('DYCOL00', axis=1)
+income = M98_1401[17].merge(M98_1401[18].iloc[:, 0:16], on=['Address', 'member'], how='inner') \
+    .merge(M98_1401[19].iloc[:, 0:8].merge(M98_1401[20].iloc[:, 0:5], on=['Address', 'member'], how='inner'), on=['Address', 'member'], how='inner').drop('DYCOL00', axis=1)
 
 # پاک‌سازی داده‌های درآمد
 cleaned_income = income.copy()
