@@ -120,37 +120,51 @@ def Iqr_F(T):
 
 # تحلیل آماری
 ## توزیع سنی اعضای خانواده
+plt.figure(figsize=(10, 6))
 plt.hist(info_Member['age'], bins=100)
 plt.xlabel('سن')
 plt.ylabel('تعداد')
-plt.title('توزیع سنی اعضای خانواده')
+plt.title('توزیع سن اعضای خانواده')
 plt.show()
-
 ## میزان تحصیلات اعضای خانواده
+plt.figure(figsize=(10, 6))
 plt.bar(info_Member['degree'].value_counts().index, info_Member['degree'].value_counts().to_list())
-plt.xlabel('تحصیلات')
+plt.xlabel('مدرک تحصیلی', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
 plt.ylabel('تعداد')
-plt.title('میزان تحصیلات اعضای خانواده')
+plt.title('توزیع مدرک تحصیلی اعضای خانواده')
 plt.show()
-
 ## رابطه اعضای خانواده با سرپرست
+plt.figure(figsize=(10, 6))
 plt.bar(info_Member['relation'].value_counts().index, info_Member['relation'].value_counts().to_list())
-plt.xlabel('رابطه')
+plt.xlabel('نسبت', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
 plt.ylabel('تعداد')
-plt.title('رابطه اعضای خانواده با سرپرست')
+plt.title('توزیع نسبت اعضای خانواده')
 plt.show()
-
 ## سطح سواد اعضای خانواده
+plt.figure(figsize=(10, 6))
 plt.bar(info_Member['literacy'].value_counts().index, info_Member['literacy'].value_counts().to_list())
-plt.xlabel('سطح سواد')
+plt.xlabel('سطح سواد', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
 plt.ylabel('تعداد')
-plt.title('سطح سواد اعضای خانواده')
+plt.title('توزیع سطح سواد اعضای خانواده')
+plt.show()
+## وضعیت شغلی اعضای خانواده
+plt.figure(figsize=(10, 6))
+plt.bar(info_Member['occupationalst'].value_counts().index, info_Member['occupationalst'].value_counts().to_list())
+plt.xlabel('وضعیت شغلی', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
+plt.ylabel('تعداد')
+plt.title('توزیع وضعیت شغلی اعضای خانواده')
 plt.show()
 
-## وضعیت شغلی اعضای خانواده
-plt.bar(info_Member['occupationalst'].value_counts().index, info_Member['occupationalst'].value_counts().to_list())
-plt.xlabel('وضعیت شغلی')
-plt.ylabel('تعداد')
-plt.title('وضعیت شغلی اعضای خانواده')
-plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
 
