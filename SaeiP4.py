@@ -104,7 +104,11 @@ final_income = cleaned_income[[
     'Address','Employed', 'ISCO_w', 'ISIC_w', 'Status', 'Hours', 'Days', 'ISCO_s', 'ISIC_s', 'netincome_w_m', 'netincome_w_y', 'agriculture', 'sale', 'income_s_y',
     'income_pension', 'income_rent', 'income_interest', 'income_aid', 'income_resale', 'income_transfer', 'subsidy_month', 'subsidy', 'Fasl', 'dataYear', 'R/U'
 ]].fillna(0)
-
+## ذخیره داده پاک
+info_Family.to_csv('info_Family.csv')
+info_Member.to_csv('info_Member.csv')
+filtered_cost.to_csv('filtered_cost.csv')
+final_income.to_csv('final_income.csv')
 # تابع محاسبه IQR و حذف نقاط دورافتاده
 def Iqr_F(T):
     d1 = T.quantile(0.25)
