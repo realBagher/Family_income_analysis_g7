@@ -33,7 +33,7 @@ for i in range(1, 22):
 
 # پیش‌پردازش
 ## اطلاعات خانواده
-info_Family = M98_1401[0][['Address', 'Fasl', 'province', 'dataYear', 'R/U']].merge(M98_1401[3], on='Address', how='outer')
+info_Family = M98_1401[0][['Address', 'Fasl', 'province','khanevartype', 'dataYear', 'R/U']]
 
 ## اطلاعات اعضا
 info_Member = M98_1401[1].copy()
