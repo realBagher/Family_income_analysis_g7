@@ -124,41 +124,79 @@ def Iqr_F(T):
     T_copy = T.clip(lower=low_bound, upper=up_bound)
     return pd.DataFrame(T_copy)
 
-# تحلیل آماری
-## توزیع سنی اعضای خانواده
+# تحلیل آماری# توزیع سن
 plt.figure(figsize=(10, 6))
-plt.hist(info_Member['age'], bins=100)
+plt.hist(info_Member['age'], bins=100, color='skyblue', edgecolor='black')
 plt.xlabel('سن')
 plt.ylabel('تعداد')
-plt.title('توزیع سن اعضای خانواده')
+plt.title('توزیع سن اعضای خانوار')
+plt.grid(True)
 plt.show()
-## میزان تحصیلات اعضای خانواده
+
+# توزیع میزان تحصیلات
 plt.figure(figsize=(10, 6))
-plt.bar(info_Member['degree'].value_counts().index, info_Member['degree'].value_counts().to_list())
-plt.xlabel('مدرک تحصیلی', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
+sns.countplot(data=info_Member, x='degree', palette='viridis')
+plt.xlabel('میزان تحصیلات')
 plt.ylabel('تعداد')
-plt.title('توزیع مدرک تحصیلی اعضای خانواده')
+plt.title('توزیع میزان تحصیلات اعضای خانوار')
+plt.xticks(rotation=45)
+plt.grid(True)
 plt.show()
-## رابطه اعضای خانواده با سرپرست
+
+# توزیع بستگی با سرپرست
 plt.figure(figsize=(10, 6))
-plt.bar(info_Member['relation'].value_counts().index, info_Member['relation'].value_counts().to_list())
-plt.xlabel('نسبت', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
+sns.countplot(data=info_Member, x='relation', palette='viridis')
+plt.xlabel('بستگی با سرپرست')
 plt.ylabel('تعداد')
-plt.title('توزیع نسبت اعضای خانواده')
+plt.title('توزیع بستگی با سرپرست اعضای خانوار')
+plt.xticks(rotation=45)
+plt.grid(True)
 plt.show()
-## سطح سواد اعضای خانواده
+
+# توزیع پایه یا مدرک
 plt.figure(figsize=(10, 6))
-plt.bar(info_Member['literacy'].value_counts().index, info_Member['literacy'].value_counts().to_list())
-plt.xlabel('سطح سواد', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
+sns.countplot(data=info_Member, x='degree', palette='viridis')
+plt.xlabel('پایه یا مدرک')
 plt.ylabel('تعداد')
-plt.title('توزیع سطح سواد اعضای خانواده')
+plt.title('توزیع پایه یا مدرک اعضای خانوار')
+plt.xticks(rotation=45)
+plt.grid(True)
 plt.show()
-## وضعیت شغلی اعضای خانواده
+
+# توزیع وضع فعالیت
 plt.figure(figsize=(10, 6))
-plt.bar(info_Member['occupationalst'].value_counts().index, info_Member['occupationalst'].value_counts().to_list())
-plt.xlabel('وضعیت شغلی', rotation=45, ha='right')  # rotation=45 برای چرخش متن به زاویه 45 درجه
+sns.countplot(data=info_Member, x='occupationalst', palette='viridis')
+plt.xlabel('وضع فعالیت')
 plt.ylabel('تعداد')
-plt.title('توزیع وضعیت شغلی اعضای خانواده')
+plt.title('توزیع وضع فعالیت اعضای خانوار')
+plt.xticks(rotation=45)
+plt.grid(True)
+plt.show()
+
+# ترند هزینه خانوار برای هر سال برای غذاهای آماده، هتل و رستوران
+# filtered_cost.dataYear = pd.to_numeric(filtered_cost.dataYear, errors='coerce')
+# filtered_cost = filtered_cost.sort_values(by='dataYear',ascending=False)
+filtered_cost.dataYear = pd.Categorical(filtered_cost['dataYear'],categories=['98','99','1400','1401'],ordered=True)
+
+trend_cost = filtered_cost[filtered_cost['catagory'].isin(['11'])].groupby(['dataYear', 'catagory'])['value'].sum().unstack()
+# trend_cost.catagory[trend_cost.catagory == '98'] = '1398'
+trend_cost = trend_cost.sort_values(by='dataYear',ascending=True)
+print(trend_cost)
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=trend_cost)
+plt.xlabel('سال')
+plt.ylabel('هزینه')
+plt.title('ترند هزینه خانوار برای غذاهای آماده، هتل و رستوران در هر سال')
+plt.grid(True)
+plt.show()
+
+# ماتریس هم‌بستگی برای هزینه‌های مختلف
+selected_costs = grouped_cost[grouped_cost['catagory'].isin(['3', '1', '4', '6'])]
+pivot_costs = selected_costs.pivot_table(index='Address', columns='catagory', values='value', aggfunc='sum').fillna(0)
+
+plt.figure(figsize=(10, 8))
+sns.heatmap(pivot_costs.corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1)
+plt.title('ماتریس هم‌بستگی برای هزینه‌های مختلف خانوار')
 plt.show()
 
 
