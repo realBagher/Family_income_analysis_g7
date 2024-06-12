@@ -198,6 +198,24 @@ plt.figure(figsize=(10, 8))
 sns.heatmap(pivot_costs.corr(), annot=True, cmap='coolwarm', vmin=-1, vmax=1)
 plt.title('ماتریس هم‌بستگی برای هزینه‌های مختلف خانوار')
 plt.show()
+# آزمون فرض آماری
+from scipy.stats import ttest_ind
+final_income_p = final_income.merge(info_Family[['Address','province']],on='Address',how='inner')#.index#['catagory']#['datayear']
+# فیلتر داده‌ها برای استان چهارمحال و بختیاری
+province_data = final_income_p[final_income_p['province'] == 'CharmahalBakhtiari']
+
+# درآمد خانوارهای شهری و روستایی
+urban_income = province_data[province_data['R/U'] == 'U']['netincome_w_y']
+rural_income = province_data[province_data['R/U'] == 'R']['netincome_w_y']
+
+# آزمون t-test مستقل
+t_stat, p_value = ttest_ind(urban_income, rural_income, equal_var=False)
+
+print(f"t-statistic: {t_stat}, p-value: {p_value}")
+if p_value < 0.05:
+    print("درآمد خانوارهای شهری و روستایی در استان چهارمحال و بختیاری با هم برابر نیست.")
+else:
+    print("درآمد خانوارهای شهری و روستایی در استان چهارمحال و بختیاری با هم برابر است.")
 
 
 
