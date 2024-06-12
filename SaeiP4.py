@@ -59,9 +59,11 @@ cost = cost.fillna(0)
 ## ایجاد ستون دسته‌بندی
 cost['catagory'] = cost.code.astype(str).str[:1]
 
-## پاک‌سازی ستون‌های 'gram' و 'kilogram'
-cost['gram'] = pd.to_numeric(cost['gram'], errors='coerce')
-cost['kilogram'] = pd.to_numeric(cost['kilogram'], errors='coerce')
+# ایجاد ستون 'len' که طول هر کد را ذخیره می‌کند
+cost['len'] = cost.code.astype(str).apply(len)
+
+# به‌روزرسانی ستون 'catagory' برای رکوردهایی که شرایط خاص را دارند
+cost.loc[(cost.code.astype(str).apply(len) == 6) & (cost.code.astype(str).str[:4] == '1111'), 'catagory'] = '11'
 
 ## محاسبه ستون 'Kilogram'
 cost['Kilogram'] = cost['gram'] / 1000 + cost['kilogram']
@@ -69,10 +71,10 @@ cost['Kilogram'] = cost['gram'] / 1000 + cost['kilogram']
 ## گروه‌بندی داده‌ها بر اساس آدرس، سال داده، دسته‌بندی و نوع (شهری/روستایی)
 grouped_cost = cost.groupby(['Address', 'dataYear', 'catagory', 'R/U'])[['value', 'Kilogram']].sum().reset_index()
 
-## استفاده از np.isin برای ایجاد ماسک بولی
+# استفاده از np.isin برای ایجاد ماسک بولی
 mask = np.isin(grouped_cost['catagory'], ['1', '3', '4', '6', '7', '11'])
 
-## فیلتر کردن داده‌ها بر اساس ماسک بولی
+# فیلتر کردن داده‌ها بر اساس ماسک بولی
 filtered_cost = grouped_cost[mask]
 
 # ادغام داده‌های درآمد
