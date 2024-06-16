@@ -157,7 +157,46 @@ if p_value < alpha:
     print("فرض صفر رد می‌شود: میانگین درآمد خانواده‌های شهری و روستایی برابر نیست.")
 else:
     print("فرض صفر رد نمی‌شود: میانگین درآمد خانواده‌های شهری و روستایی برابر است.")
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
+# فرض کنید که 'filtered_cost' و 'final_income' داده‌های هزینه و درآمد را شامل می‌شوند.
+
+# ادغام داده‌های هزینه و درآمد بر اساس 'Address' و 'dataYear'
+merged_data = filtered_cost.merge(final_income, on=['Address', 'dataYear'], how='inner')
+
+# انتخاب ستون‌های مورد نیاز
+data = merged_data[['value', 'netincome_w_y']]
+
+# استانداردسازی داده‌ها
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(data)
+
+# اجرای الگوریتم K-means با 10 خوشه
+kmeans = KMeans(n_clusters=10, random_state=42)
+kmeans.fit(scaled_data)
+labels = kmeans.labels_
+centers = kmeans.cluster_centers_
+
+# اضافه کردن برچسب خوشه‌ها به داده‌ها
+merged_data['cluster'] = labels
+
+# رسم اسکتر پلات با مراکز خوشه‌ها
+plt.figure(figsize=(12, 8))
+sns.scatterplot(x=scaled_data[:, 0], y=scaled_data[:, 1], hue=labels, palette='viridis', legend='full', s=50, alpha=0.6)
+plt.scatter(centers[:, 0], centers[:, 1], c='red', s=200, alpha=0.75, marker='X')
+
+# تنظیمات نمودار
+plt.xlabel('cost')
+plt.ylabel('income')
+plt.title('K-means')
+plt.legend(title='clusters')
+plt.grid(True)
+plt.show()
 # کاهش اندازه داده‌ها به 5% داده‌های اصلی
 sampled_data = scaled_data[np.random.choice(scaled_data.shape[0], size=int(scaled_data.shape[0] * 0.05, replace=False))]
 
