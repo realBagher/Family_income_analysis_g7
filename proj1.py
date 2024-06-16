@@ -158,6 +158,20 @@ if p_value < alpha:
 else:
     print("فرض صفر رد نمی‌شود: میانگین درآمد خانواده‌های شهری و روستایی برابر است.")
 
+# کاهش اندازه داده‌ها به 5% داده‌های اصلی
+sampled_data = scaled_data[np.random.choice(scaled_data.shape[0], size=int(scaled_data.shape[0] * 0.05, replace=False))]
+
+dbscan = DBSCAN(eps=0.5, min_samples=10)
+labels_dbscan = dbscan.fit_predict(sampled_data)
+
+plt.figure(figsize=(12, 8))
+sns.scatterplot(x=sampled_data[:, 0], y=sampled_data[:, 1], hue=labels_dbscan, palette='viridis', legend='full', s=50, alpha=0.6)
+plt.xlabel('cost')
+plt.ylabel('income')
+plt.title('DBSCAN')
+plt.legend(title='clusters')
+plt.grid(True)
+plt.show()
 
 transport=filtered_cost[filtered_cost["catagory"]=="7"]
 transport.drop(["Kilogram"],axis=1,inplace=True)
